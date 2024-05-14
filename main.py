@@ -132,7 +132,7 @@ def doTests() -> None:
     in_files_names.sort()
     out_files_names.sort()
 
-    result_html: BeautifulSoup = prepareSoup()
+    # result_html: BeautifulSoup = prepareSoup()
 
     in_file_name: str
     out_file_name: str

@@ -102,8 +102,6 @@ class MasterTester:
             for testcase in test.testcases:
                 testcase.actual_out = self.__getProgramOutput(testcase.in_data)
 
-            test.passCheck()
-
     def printResults(self) -> None:
         for test in self.__tests:
             print(f'{test.name} -> {test.passed}')

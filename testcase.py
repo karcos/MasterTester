@@ -1,8 +1,12 @@
+from typing import *
+
+
 class Testcase:
-    def __init__(self, name: str, in_data: str, out_data: str) -> None:
+    def __init__(self, name: str, in_data: str, out_data: str, update_callback: Optional[Callable]) -> None:
         self.__name: str = name
         self.__in_data: str = in_data
         self.__out_data: str = out_data
+        self.__update_callback: Optional[Callable] = update_callback
 
         self.__actual_out: str = str()
         self.__passed: bool = False
@@ -27,6 +31,7 @@ class Testcase:
     def actual_out(self, actual_out: str) -> None:
         self.__actual_out = actual_out
         self.__passed = self.__out_data == self.__actual_out
+        self.__update_callback()
 
     @property
     def passed(self) -> bool:

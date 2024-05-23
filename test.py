@@ -30,10 +30,10 @@ class Test:
             if name is None:
                 name = f"Testcase {i + 1}"
 
-            self.__testcases.append(Testcase(name, in_, out_))
+            self.__testcases.append(Testcase(name, in_, out_, self.__update_passed_status))
 
-    def passCheck(self) -> None:
-        self.__passed = False not in [case.passed for case in self.__testcases]
+    def __update_passed_status(self) -> None:
+        self.__passed = all(case.passed for case in self.__testcases)
 
     @property
     def name(self) -> str:

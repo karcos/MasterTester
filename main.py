@@ -4,11 +4,13 @@ from bs4 import Tag
 from typing import *
 
 import locale
-import json
 import copy
 
 from mastertester import MasterTester
+from gui_handler import GUIHandler
 
 
 if __name__ == '__main__':
-    MasterTester().run()
+    # MasterTester().run()
+    a = GUIHandler()
+    a.loop()

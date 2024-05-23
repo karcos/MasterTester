@@ -25,10 +25,10 @@ class Test:
                     name = first_line[1:-1]
                     in_ = main_test
                 else:
-                    name = f"Testcase {i + 1}"
+                    name = f"{self.__name} {i + 1}"
 
             if name is None:
-                name = f"Testcase {i + 1}"
+                name = f"{self.__name} {i + 1}"
 
             self.__testcases.append(Testcase(name, in_, out_, self.__update_passed_status))
 

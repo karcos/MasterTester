@@ -15,4 +15,3 @@ class GUIHandler:
 
     def askOkCancel(self, ask: str) -> bool:
         return messagebox.askokcancel("No data", ask)
-

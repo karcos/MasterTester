@@ -1,9 +1,0 @@
-{
-    pl_PL: "Pliki wejściowe powinny się znaleźć w folderze 'in', natomiast pliki z oczekiwanym wyjściem w folderze 'out. W folderach zawsze powinna się znaleźć równa liczba plików.
-Nazwy odpowiednich plików wejściowych i wyjściowych powinny się różnić tylko dopiskiem 'in' i 'out' w ich nazwach lub w ogóle się nie różnić.
-Poszczególne przypadki testowe powinny być oddzielone pustą linią w plikach z danymi wejściowymi, jak i w plikach z oczekiwanym wyjściem.
-Pliki wynikowe pojawiają się w folderze 'results'. Ich nazwy będą tworzone z części nazwy pliku wejściowego oraz czasu początku uruchomienia testów.
-Przypadki testowe będą numerowane od 1, chyba że w pliku wejściowym przed każdym przypadkiem testowym znajdzie się dopisek %name: nameOfTestCase% . W nazwach przypadków testowych dozwolone są tylko litery oraz liczby.
-
-Kliknij "Tak" jeżeli Twoje pliki są przygotowane zgodnie z powyższymi wytycznymi, w przeciwnym wypadku kliknij "Nie"."
-}

@@ -1,0 +1,8 @@
+%Moj pierwszy test%
+2 2
+
+%Drugi%
+5 3
+
+%%
+6 7

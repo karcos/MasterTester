@@ -5,8 +5,11 @@ import subprocess
 
 from test import Test
 from testcase import Testcase
+from HTMLGenerator import HTMLGenerator
 from tkinter import StringVar
 from const import *
+from bs4 import BeautifulSoup, Tag
+from datetime import datetime
 
 
 class MasterTester:
@@ -29,8 +32,7 @@ class MasterTester:
         self.__tests: List[Test] = list()
 
     def run(self) -> int:
-        error_pack: int | Tuple[int, str]
-        error_pack = self.__getInOutFilesNames()
+        error_pack: int | Tuple[int, str] = self.__getInOutFilesNames()
         if (type(error_pack) is int and error_pack != NO_ERROR) or type(error_pack) is tuple:
             return error_pack
 
@@ -38,8 +40,24 @@ class MasterTester:
         if (type(error_pack) is int and error_pack != NO_ERROR) or type(error_pack) is tuple:
             return error_pack
 
+        try:
+            if not os.path.exists(self.__result_folder_path):
+                os.makedirs(self.__result_folder_path)
+        except Any:
+            raise NotImplemented
+
         self.__doTests()
-        self.__printResults()
+        self.__info.set('Generating result file')
+
+        now: datetime = datetime.now().replace(microsecond=0)
+        now_str: str = now.strftime('%Y-%m-%d %H-%M-%S')
+        bs4_results: BeautifulSoup = HTMLGenerator(self.__tests).generateResults()
+
+        title_tag: Tag = bs4_results.find('title')
+        title_tag.string = f'Result {now_str}'
+
+        with open(os.path.join(self.__result_folder_path, f'Result {now_str}.html'), 'w', encoding='utf-8') as file:
+            file.write(bs4_results.prettify())
 
         return NO_ERROR
 
@@ -76,9 +94,14 @@ class MasterTester:
         self.__in_files = [file for file in self.__in_files if file.split('.')[1] == 'txt']
         self.__out_files = [file for file in self.__out_files if file.split('.')[1] == 'txt']
 
+        self.__in_files.sort()
+        self.__out_files.sort()
+
         return NO_ERROR
 
     def __validateFiles(self) -> int | Tuple[int, str]:
+        self.__info.set('Validating files...')
+        
         if len(self.__in_files) == 0:
             return NO_TESTS
         elif len(self.__in_files) != len(self.__out_files):
@@ -87,7 +110,7 @@ class MasterTester:
         in_file: str
         out_file: str
         for in_file, out_file in zip(self.__in_files, self.__out_files):
-            print(in_file.replace('_in', ''), out_file.replace('_out', ''))
+
             if in_file.replace('_in', '') != out_file.replace('_out', ''):
                 return WRONG_FILES_NAMES, ' '.join([in_file, out_file])
 
@@ -116,7 +139,6 @@ class MasterTester:
             testcase: Testcase
             for testcase in test.testcases:
                 self.__info.set(f'Test: {test.name}\nTestcase: {testcase.name}')
-                self.__info.get()
 
                 testcase.actual_out = self.__getProgramOutput(testcase.in_data)
 

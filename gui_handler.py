@@ -12,6 +12,7 @@ class GUIHandler:
         self.__root: Tk = Tk()
         self.__root.title('MasterTester')
         self.__root.resizable(False, False)
+        self.__root.iconbitmap('icon.ico')
 
         Label(self.__root, text='MasterTester', font=('Arial', 23)).pack(pady=40, padx=20)
         Label(self.__root, text='Welcome to MasterTester', font=('Arial', 15)).pack(pady=20, padx=20)
@@ -48,7 +49,8 @@ class GUIHandler:
         Button(self.__root, text='Start testing', font=('Arial', 15), command=self.__startTests).pack(pady=30)
 
         self.__info: StringVar = StringVar()
-        Label(self.__root, textvariable=self.__info, font=("Arial", 13))
+        self.__info.trace_add('write', self.__infoCallback)
+        Label(self.__root, textvariable=self.__info, font=("Arial", 13)).pack(pady=10)
 
     def __startTests(self) -> None:
         if len(self.__exe_path_var.get()) == 0:
@@ -72,8 +74,10 @@ class GUIHandler:
                                             self.__info)
 
         error_pack: Tuple[int, str] | int = tester.run()
+        self.__info.set('')
+        self.__root.update()
         if type(error_pack) is int and error_pack == NO_ERROR:
-            self.__showInfo('All tests done!')
+            self.__showInfo('All done!')
         else:
             self.__errorsHandle(error_pack)
 
@@ -105,7 +109,6 @@ class GUIHandler:
         else:
             self.__showError(f'Unknown error {error_code} {error_add}')
 
-
     @staticmethod
     def __showError(message: str) -> None:
         messagebox.showerror('Error', message)
@@ -127,11 +130,6 @@ class GUIHandler:
     def loop(self) -> None:
         self.__root.mainloop()
 
-    @property
-    def info(self) -> str:
-        return self.__info.get()
-
-    @info.setter
-    def info(self, new_info: str):
-        self.__info.set(new_info)
+    def __infoCallback(self, *args):
+        self.__info.set(self.__info.get())
         self.__root.update()

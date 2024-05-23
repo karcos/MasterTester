@@ -1,3 +1,4 @@
+import time
 from typing import *
 import os
 import subprocess
@@ -25,6 +26,7 @@ class MasterTester:
     def run(self) -> None:
         self.__doTests()
         self.__printResults()
+        self.__gui_handler.loop()
 
     def __getProgramOutput(self, data: str) -> str:
         result: subprocess.CompletedProcess[str] = subprocess.run([self.__file_selected],
@@ -53,6 +55,7 @@ class MasterTester:
             self.__gui_handler.showError(f'Permission denied to folder {e.filename}')
 
     def __validateFiles(self) -> None:
+        self.__gui_handler.info_text = "Validating files..."
         if len(self.__in_files) == 0:
             self.__gui_handler.showError('There are no tests to do')
         elif len(self.__in_files) != len(self.__out_files):
@@ -100,7 +103,10 @@ class MasterTester:
         test: Test
         for test in self.__tests:
             for testcase in test.testcases:
+                self.__gui_handler.info_text = f"Test: {test.name}\nTestcase: {testcase.name}"
                 testcase.actual_out = self.__getProgramOutput(testcase.in_data)
+
+        self.__gui_handler.info_text = "All tests done!"
 
     def __printResults(self) -> None:
         for test in self.__tests:

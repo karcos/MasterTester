@@ -4,8 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4f9aea8a-f9bd-4c90-963d-1c965bd5ce36" name="Changes" comment="Added callback to Test, while Testcases' setter used">
+    <list default="true" id="4f9aea8a-f9bd-4c90-963d-1c965bd5ce36" name="Changes" comment="Add TODO and hotfix">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gui_handler.py" beforeDir="false" afterPath="$PROJECT_DIR$/gui_handler.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mastertester.py" beforeDir="false" afterPath="$PROJECT_DIR$/mastertester.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -132,7 +134,15 @@
       <option name="project" value="LOCAL" />
       <updated>1716428741113</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="Add TODO and hotfix">
+      <option name="closed" value="true" />
+      <created>1716429468978</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1716429468978</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -140,6 +150,7 @@
     <MESSAGE value="Added classes Test and Testcase. Now program is testing properly" />
     <MESSAGE value="Hotfix" />
     <MESSAGE value="Added callback to Test, while Testcases' setter used" />
-    <option name="LAST_COMMIT_MESSAGE" value="Added callback to Test, while Testcases' setter used" />
+    <MESSAGE value="Add TODO and hotfix" />
+    <option name="LAST_COMMIT_MESSAGE" value="Add TODO and hotfix" />
   </component>
 </project>

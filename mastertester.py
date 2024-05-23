@@ -24,7 +24,7 @@ class MasterTester:
 
     def run(self) -> None:
         self.__doTests()
-        self.printResults()
+        self.__printResults()
 
     def __getProgramOutput(self, data: str) -> str:
         result: subprocess.CompletedProcess[str] = subprocess.run([self.__file_selected],
@@ -102,7 +102,7 @@ class MasterTester:
             for testcase in test.testcases:
                 testcase.actual_out = self.__getProgramOutput(testcase.in_data)
 
-    def printResults(self) -> None:
+    def __printResults(self) -> None:
         for test in self.__tests:
             print(f'{test.name} -> {test.passed}')
             for testcase in test.testcases:

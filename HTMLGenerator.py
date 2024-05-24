@@ -1,5 +1,5 @@
 from typing import *
-from bs4 import BeautifulSoup, Tag
+from bs4 import BeautifulSoup, Tag, NavigableString
 from copy import copy
 from test import Test
 from testcase import Testcase
@@ -15,68 +15,88 @@ class HTMLGenerator:
             <head>
                 <meta charset="UTF-8">
                 <title></title>
-                <style>
-                    :root {
-                        --fail-button-bg-color: red;
-                        --fail-content-bg-color: rgba(255, 102, 102, 0.8);
-                        
-                        --pass-button-bg-color: green;
-                        --pass-content-bg-color: rgba(144, 238, 144, 0.8);
-                        
-                        --pass-body-bg-color: rgb(200, 255, 200);
-                        --fail-body-bg-color: rgb(255, 200, 200);
-                    }
-                    
-                    body {
-                        margin: 0;
-                    }
-                    
-                    .accordion {
-                        width: 100vw;
-                    }
-                    
-                    .accordion-item {
-                        margin: 10px 0;
-                    }
-                    
-                    .accordion-item:first-child {
-                        margin: 0;
-                    }
-                    
-                    .accordion-button, .sub-accordion-button {
-                        background-color: var(--fail-button-bg-color);
-                        border: none;
-                        width: 100%;
-                        text-align: left;
-                        padding: 10px 0;
-                        cursor: pointer;
-                        outline: none;
-                        text-align: center;
-                    }
-                    
-                    .accordion-button {
-                        font-size: 25px;
-                        font-weight: bold;
-                    }
-                    
-                    .sub-accordion-button {
-                        font-size: 15px;
-                        font-weight: bold;
-                    }
-            
-                    .accordion-content, .sub-accordion-content {
-                        display: none;
-                        padding: 5px 10px;
-                    }
-            
-                    .sub-accordion-content div {
-                        padding: 5px 0;
-                    }
-                </style>
             </head>
             <body>
             </body>
             </html>
+        """
+        styles: str = """
+            <style>
+                :root {
+                    --fail-button-bg-color: red;
+                    --fail-content-bg-color: rgb(255, 120, 120);
+                    
+                    --pass-button-bg-color: green;
+                    --pass-content-bg-color: rgb(120, 255, 120);
+                    
+                    --pass-body-bg-color: rgb(170, 255, 170);
+                    --fail-body-bg-color: rgb(255, 170, 170);
+                }
+                
+                body {
+                    margin: 0;
+                    font-family: 'Arial', sans-serif;
+                }
+                
+                .accordion {
+                    width: 100vw;
+                }
+                
+                .accordion-item {
+                    margin: 10px 0;
+                }
+                
+                .accordion-item:first-child {
+                    margin: 0;
+                }
+                
+                .accordion-button, .sub-accordion-button {
+                    background-color: var(--fail-button-bg-color);
+                    border: none;
+                    width: 100%;
+                    text-align: left;
+                    padding: 10px 0;
+                    cursor: pointer;
+                    outline: none;
+                    text-align: center;
+                }
+                
+                .accordion-button {
+                    font-size: 25px;
+                    font-weight: bold;
+                }
+                
+                .sub-accordion-button {
+                    font-size: 15px;
+                    font-weight: bold;
+                }
+        
+                .accordion-content, .sub-accordion-content {
+                    display: none;
+                    padding: 5px 10px;
+                }
+                
+                .sub-accordion-content {
+                    text-align: center;
+                }
+                
+                .content-part {
+                    margin-bottom: 15px;
+                }
+                
+                .content-part-header {
+                    font-size: 13px;
+                    font-weight: bold;
+                }
+                
+                .content-part-main {
+                    font-family: 'Consolas', sans-serif;
+                    background-color: white;
+                    padding: 7px;
+                    display: inline-block;
+                    text-align: left;
+                }       
+            </style>
         """
         js_script: str = """
             <script>
@@ -101,21 +121,36 @@ class HTMLGenerator:
         test_tag: str = """
             <div class="accordion-item">
                 <button class="accordion-button" id="test-button"></button>
-                    <div class="accordion-content">
-                        <div class="sub-accordion" id="testcases">
-                        </div>
+                <div class="accordion-content">
+                    <div class="sub-accordion" id="testcases">
                     </div>
+                </div>
             </div>
         """
         testcase_tag: str = """
             <div class="sub-accordion-item">
                 <button class="sub-accordion-button" id="testcase-button"></button>
                 <div class="sub-accordion-content" id="testcase-content">
+                    <div class="content-part" id="content-first">
+                        <div class="content-part-header">INPUT:</div>
+                        <div class="content-part-main" id="content-part-main"></div>
+                    </div>
+                    <div class="content-part" id="content-second">
+                        <div class="content-part-header">ACTUAL OUTPUT:</div>
+                        <div class="content-part-main" id="content-part-main"></div>
+                    </div>
+                    <div class="content-part" id="content-third">
+                        <div class="content-part-header">PROPER OUTPUT:</div>
+                        <div class="content-part-main" id="content-part-main"></div>
+                    </div>
                 </div>
             </div>
         """
 
         self.__html_soup: BeautifulSoup = BeautifulSoup(html_innit, 'html.parser')
+        self.__styles: BeautifulSoup = BeautifulSoup(styles, 'html.parser')
+        self.__html_soup.find('head').append(self.__styles)
+
         self.__js_script: BeautifulSoup = BeautifulSoup(js_script, 'html.parser')
         self.__test_tag: BeautifulSoup = BeautifulSoup(test_tag, 'html.parser')
         self.__testcase_tag: BeautifulSoup = BeautifulSoup(testcase_tag, 'html.parser')
@@ -157,21 +192,19 @@ class HTMLGenerator:
                     testcase_button['style'] = f'background-color: var(--{color}-button-bg-color);'
 
                 testcase_content: Tag = new_testcase.find(id='testcase-content')
+                testcase_content['style'] = f'background-color: var(--{color}-content-bg-color);'
 
-                in_data: Tag = self.__html_soup.new_tag('div')
-                in_data['style'] = f'background-color: var(--{color}-content-bg-color);'
-                in_data.string = testcase.in_data
-                testcase_content.append(in_data)
+                in_data: Tag = testcase_content.find(id='content-first').find(id='content-part-main')
+                in_data.append(BeautifulSoup(testcase.in_data.replace('\n', '<br>'),
+                                             'html.parser'))
 
-                out_data: Tag = self.__html_soup.new_tag('div')
-                out_data['style'] = f'background-color: var(--{color}-content-bg-color);'
-                out_data.string = testcase.out_data
-                testcase_content.append(out_data)
+                actual_out: Tag = testcase_content.find(id='content-second').find(id='content-part-main')
+                actual_out.append(BeautifulSoup(testcase.actual_out.replace('\n', '<br>'),
+                                                'html.parser'))
 
-                actual_data: Tag = self.__html_soup.new_tag('div')
-                actual_data['style'] = f'background-color: var(--{color}-content-bg-color);'
-                actual_data.string = testcase.actual_out
-                testcase_content.append(actual_data)
+                proper_out: Tag = testcase_content.find(id='content-third').find(id='content-part-main')
+                proper_out.append(BeautifulSoup(testcase.actual_out.replace('\n', '<br>'),
+                                                'html.parser'))
 
                 testcases_tag.append(new_testcase)
 

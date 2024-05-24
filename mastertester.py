@@ -140,7 +140,8 @@ class MasterTester:
             for testcase in test.testcases:
                 self.__info.set(f'Test: {test.name}\nTestcase: {testcase.name}')
 
-                testcase.actual_out = self.__getProgramOutput(testcase.in_data)
+                testcase.actual_out = self.__getProgramOutput(testcase.in_data)[:-1]
+                print(f"'{testcase.actual_out}'\n'{testcase.out_data}'")
 
     def __printResults(self) -> None:
         for test in self.__tests:

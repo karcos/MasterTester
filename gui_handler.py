@@ -17,7 +17,7 @@ class GUIHandler:
         Label(self.__root, text='MasterTester', font=('Arial', 23)).pack(pady=40, padx=20)
         Label(self.__root, text='Welcome to MasterTester', font=('Arial', 15)).pack(pady=20, padx=20)
 
-        Label(self.__root, text='*.exe path', font=('Arial', 13)).pack()
+        Label(self.__root, text='*.exe file path', font=('Arial', 13)).pack()
         self.__exe_path_var: StringVar = StringVar()
         Button(self.__root, text='Select', command=partial(self.__chooseExeFile,
                                                            self.__exe_path_var,
@@ -25,22 +25,22 @@ class GUIHandler:
                                                            [('Executable file', '*exe')])).pack()
         Entry(self.__root, textvariable=self.__exe_path_var, state='disabled', width=40).pack(pady=20)
 
-        Label(self.__root, text='In files folder path', font=('Arial', 13)).pack()
-        self.__in_folder_path: StringVar = StringVar(value=os.path.join(os.getcwd(), "in"))
+        Label(self.__root, text='Input files folder path', font=('Arial', 13)).pack()
+        self.__in_folder_path: StringVar = StringVar(value=os.path.join(os.getcwd(), 'in'))
         Button(self.__root, text='Select', command=partial(self.__chooseExeFile,
                                                            self.__in_folder_path,
                                                            'Select folder with inputs')).pack()
         Entry(self.__root, textvariable=self.__in_folder_path, state='disabled', width=40).pack(pady=20)
 
-        Label(self.__root, text='Out files folder path', font=('Arial', 13)).pack()
-        self.__out_folder_path: StringVar = StringVar(value=os.path.join(os.getcwd(), "out"))
+        Label(self.__root, text='Output files folder path', font=('Arial', 13)).pack()
+        self.__out_folder_path: StringVar = StringVar(value=os.path.join(os.getcwd(), 'out'))
         Button(self.__root, text='Select', command=partial(self.__chooseExeFile,
                                                            self.__out_folder_path,
                                                            'Select folder with outputs')).pack()
         Entry(self.__root, textvariable=self.__out_folder_path, state='disabled', width=40).pack(pady=20)
 
         Label(self.__root, text='Results folder path', font=('Arial', 13)).pack()
-        self.__results_folder_path: StringVar = StringVar(value=os.path.join(os.getcwd(), "results"))
+        self.__results_folder_path: StringVar = StringVar(value=os.path.join(os.getcwd(), 'results'))
         Button(self.__root, text='Select', command=partial(self.__chooseExeFile,
                                                            self.__results_folder_path,
                                                            'Select a folder to save the results')).pack()
@@ -127,9 +127,9 @@ class GUIHandler:
             path_var.set(path)
             self.__root.update()
 
-    def loop(self) -> None:
-        self.__root.mainloop()
-
     def __infoCallback(self, *args):
         self.__info.set(self.__info.get())
         self.__root.update()
+
+    def loop(self) -> None:
+        self.__root.mainloop()

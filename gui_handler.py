@@ -23,28 +23,28 @@ class GUIHandler:
                                                            self.__exe_path_var,
                                                            'Select .exe file to test',
                                                            [('Executable file', '*exe')])).pack()
-        Entry(self.__root, textvariable=self.__exe_path_var, state='disabled', width=40).pack(pady=20)
+        Entry(self.__root, textvariable=self.__exe_path_var, state='disabled', width=50).pack(pady=20, padx=10)
 
         Label(self.__root, text='Input files folder path', font=('Arial', 13)).pack()
         self.__in_folder_path: StringVar = StringVar(value=os.path.join(os.getcwd(), 'in'))
         Button(self.__root, text='Select', command=partial(self.__chooseExeFile,
                                                            self.__in_folder_path,
                                                            'Select folder with inputs')).pack()
-        Entry(self.__root, textvariable=self.__in_folder_path, state='disabled', width=40).pack(pady=20)
+        Entry(self.__root, textvariable=self.__in_folder_path, state='disabled', width=50).pack(pady=20, padx=10)
 
         Label(self.__root, text='Output files folder path', font=('Arial', 13)).pack()
         self.__out_folder_path: StringVar = StringVar(value=os.path.join(os.getcwd(), 'out'))
         Button(self.__root, text='Select', command=partial(self.__chooseExeFile,
                                                            self.__out_folder_path,
                                                            'Select folder with outputs')).pack()
-        Entry(self.__root, textvariable=self.__out_folder_path, state='disabled', width=40).pack(pady=20)
+        Entry(self.__root, textvariable=self.__out_folder_path, state='disabled', width=50).pack(pady=20, padx=10)
 
         Label(self.__root, text='Results folder path', font=('Arial', 13)).pack()
         self.__results_folder_path: StringVar = StringVar(value=os.path.join(os.getcwd(), 'results'))
         Button(self.__root, text='Select', command=partial(self.__chooseExeFile,
                                                            self.__results_folder_path,
                                                            'Select a folder to save the results')).pack()
-        Entry(self.__root, textvariable=self.__results_folder_path, state='disabled', width=40).pack(pady=20)
+        Entry(self.__root, textvariable=self.__results_folder_path, state='disabled', width=50).pack(pady=20, padx=10)
 
         Button(self.__root, text='Start testing', font=('Arial', 15), command=self.__startTests).pack(pady=30)
 
